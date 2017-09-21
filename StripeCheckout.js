@@ -74,6 +74,11 @@ export default class ReactStripeCheckout extends React.Component {
     // can't use "key" as a prop in react, so have to change the keyname
     stripeKey: PropTypes.string.isRequired,
 
+    // Run this method when you want some behaviour before opening stripe
+    // checkout. If this method returns false, it will prevent the checkout
+    // from opening.
+    onClick: PropTypes.func,
+
     // The callback to invoke when the Checkout process is complete.
     //   function(token)
     //     token is the token object created.
@@ -350,6 +355,10 @@ export default class ReactStripeCheckout extends React.Component {
 
   onClick = () => { // eslint-disable-line react/sort-comp
     if (this.props.disabled) {
+      return;
+    }
+
+    if (this.props.onClick && !this.props.onClick()) {
       return;
     }
 
